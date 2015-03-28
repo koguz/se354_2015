@@ -299,13 +299,13 @@ public class RoomsWithHalls : MonoBehaviour {
 		GameObject yer = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		yer.transform.position = new Vector3(49.5f, 0, 49.5f);
 		yer.transform.localScale = new Vector3(100.0f, 0.01f, 100.0f);
-		yer.renderer.material = floor;
+		yer.GetComponent<Renderer>().material = floor;
 		for(int i=0;i<100;i++) {
 			for(int j=0;j<100;j++) {
 				if(map[i,j].type < 3) {
 					GameObject kare = GameObject.CreatePrimitive(PrimitiveType.Cube);
 					kare.transform.position = new Vector3(i, 0.5f, j);
-					kare.renderer.material = wall;
+					kare.GetComponent<Renderer>().material = wall;
 				} 
 			}
 		}

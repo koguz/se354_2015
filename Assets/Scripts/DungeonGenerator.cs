@@ -82,17 +82,21 @@ public class DungeonGenerator : MonoBehaviour {
 			}
 		}
 
+		/* REMOVED THIS */
+		/* TODO: if the maxArea is less than 5000, then 
+		 * find another way; like re-running the map 
+		 * generation algorithm. */
 		// here is another trick
 		// if the maxArea is less than 5000 tiles, 
 		// that means more than half of the region 
 		// is walls. we want floors, so i switch the
 		// map's floor and wall id's if the maxarea is
 		// not big enough. 
-		int floorid = 0; 
-		int wallid  = 1;
-		if(maxArea < 5000) { // 100x100 ) 10.000
-			floorid = 1; wallid = 0;
-		}
+		// int floorid = 0; 
+		// int wallid  = 1;
+		// if(maxArea < 5000) { // 100x100 ) 10.000
+		//	floorid = 1; wallid = 0;
+		// }
 
 		// Regions are marked, the max area is saved in maxRegn.
 		// Go once more through the tiles, remove the smaller regions. 
@@ -100,8 +104,8 @@ public class DungeonGenerator : MonoBehaviour {
 			for(int j=1;j<101;j++) {
 				// if tile is max region, make it 1, else if it is not 0 (floor), then
 				// it is another region. make it a floor (0). 
-				if(map[i,j] == maxRegn) map[i,j] = floorid;
-				else if(map[i,j] != 0) map[i,j] = wallid;
+				if(map[i,j] == maxRegn) map[i,j] = 0;
+				else if(map[i,j] != 0) map[i,j] = 1;
 			}
 		}
 
@@ -122,13 +126,25 @@ public class DungeonGenerator : MonoBehaviour {
 		GameObject yer = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		yer.transform.position = new Vector3(50.5f, 0, 50.5f);
 		yer.transform.localScale = new Vector3(102.0f, 0.01f, 102.0f);
-		yer.renderer.material = floor;
+		yer.GetComponent<Renderer>().material = floor;
 		for(int i=0;i<102;i++) {
 			for(int j=0;j<102;j++) {
 				if(map[i,j] == 1) {
 					GameObject kare = GameObject.CreatePrimitive(PrimitiveType.Cube);
 					kare.transform.position = new Vector3(i, 0.5f, j);
-					kare.renderer.material = wall;
+					kare.GetComponent<Renderer>().material = wall;
+					/* ABOUT rigidbodies AND Colliders:
+					 * instead of adding rigidbodies, which makes the 
+					 * engine run really slow, add only colliders and
+					 * use OnCollisionEnter to kill or remove points from 
+					 * the characters: http://docs.unity3d.com/ScriptReference/Collider.OnCollisionEnter.html 
+					 * Of course, this OnCollisionEnter should be written for the characters, 
+					 * not for all of the cubes here :) 
+					 */
+					/*kare.AddComponent(typeof(BoxCollider));
+					kare.AddComponent(typeof(Rigidbody));
+					kare.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;*/
+					// kare.rigidbody.isKinematic = true;
 				} 
 			}
 		}
@@ -137,7 +153,7 @@ public class DungeonGenerator : MonoBehaviour {
 	private void lights(int x, int y) {
 		GameObject light = new GameObject("mesale");
 		light.AddComponent<Light>();
-		light.light.color = Color.red;
+		light.GetComponent<Light>().color = Color.red;
 		light.transform.position = new Vector3((float)x, 0.5f, (float)y);
 	}
 
