@@ -14,10 +14,20 @@ public class DungeonGenerator : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+	}
+
+	public void initMap(int s = 0) {
 		floor = (Material) Resources.Load ("Floor", typeof(Material));
 		wall  = (Material) Resources.Load ("Wall",  typeof(Material));
 
-		Random.seed = (int)System.DateTime.Now.Ticks;
+		int seedValue;
+		if(s == 0) 
+			seedValue = (int)System.DateTime.Now.Ticks;
+		else seedValue = s;
+
+		Debug.Log (seedValue);
+
+		Random.seed = seedValue;
 		map = new int[100,100];
 		for(int i=0;i<100;i++) {
 			for(int j=0;j<100;j++) {
@@ -173,6 +183,10 @@ public class DungeonGenerator : MonoBehaviour {
 		if(v<0) return 0;
 		else if(v>=m) return m-1;
 		else return v;
+	}
+
+	public int[,] getMap() {
+		return map;
 	}
 	
 	// Update is called once per frame
