@@ -9,6 +9,7 @@ public class TheGame : MonoBehaviour {
 		dg = gameObject.AddComponent<DungeonGenerator>();
 		dg.initMap();
 		/* A list of nice maps
+		 * -124734362 // new fav
 		 * 1189082372
 		 * 1682143077
 		 * -1957273271
@@ -33,6 +34,10 @@ public class TheGame : MonoBehaviour {
 				}
 			} while (devam);
 		}
+	}
+
+	public int[,] getMap() {
+		return dg.getMap();
 	}
 	
 	// Update is called once per frame
